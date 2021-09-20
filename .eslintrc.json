@@ -1,3 +1,9 @@
 {
-  "extends": "next/core-web-vitals"
+  "rules": {
+    "semi": ["error", "never"],
+    "no-console": "warn",
+    "no-var": "error"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": ["next", "next/core-web-vitals", "plugin:prettier/recommended"]
 }
