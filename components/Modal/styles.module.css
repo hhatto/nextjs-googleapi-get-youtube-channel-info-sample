@@ -1,0 +1,20 @@
+.modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+.modalContent {
+  z-index: 999;
+  margin: auto;
+  padding: 40px;
+  transition: transform 0.3s;
+  background-color: white;
+  border-radius: 6px;
+}

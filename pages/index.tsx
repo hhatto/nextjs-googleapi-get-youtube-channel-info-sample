@@ -1,17 +1,23 @@
+import { useState } from 'react'
 import type { NextPage } from 'next'
-import Link from 'next/link'
 import Head from 'next/head'
 import { useRecoilState } from 'recoil'
-import { authState } from 'state/auth'
+import { authState, youtubeState } from 'state/auth'
 import styles from '../styles/Home.module.css'
+import { Modal } from 'components/Modal'
 
 const Home: NextPage = () => {
+  const [openModal, setOpenModal] = useState(false)
   const [auth] = useRecoilState(authState)
-  const redirectUri = encodeURI(process.env.NEXT_PUBLIC_AUTH_REDIRECT_URI || '')
-  const scope = encodeURI(
-    'https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/userinfo.email'
-  )
-  const url = `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.NEXT_PUBLIC_CLIENT_ID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`
+  const [youtube] = useRecoilState(youtubeState)
+  console.log(auth)
+
+  const onClose = () => {
+    setOpenModal(false)
+  }
+  const onClick = () => {
+    setOpenModal(true)
+  }
 
   return (
     <div className={styles.container}>
@@ -22,6 +28,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        <Modal open={openModal} onClose={onClose} />
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
@@ -29,13 +36,15 @@ const Home: NextPage = () => {
         {auth.email && auth.email !== '' ? (
           <div>
             <p>Email: {auth.email}</p>
-            <p>YouTube Channel ID: {auth.channelId}</p>
+            <p>YouTube Channel ID: {youtube.channelId}</p>
+            <p>YouTube View Count: {youtube.viewCount}</p>
+            <p>YouTube Video Count: {youtube.videoCount}</p>
+            <p>YouTube Keywords: {youtube.keywords}</p>
+            <p>YouTube Description: {youtube.description}</p>
           </div>
         ) : (
           <div>
-            <Link href={url} passHref>
-              <button>Google Login</button>
-            </Link>
+            <button onClick={onClick}>Start Registration</button>
           </div>
         )}
       </main>
