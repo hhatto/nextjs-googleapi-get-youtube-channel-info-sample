@@ -38,3 +38,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
     * ex) `XXXX-XXXX.apps.googleusercontent.com`
 * NEXT_PUBLIC_AUTH_REDIRECT_URI
     * ex) `https://DOMAIN_NAME/auth/callback`
+* NEXT_PUBLIC_FIREBASE_API_KEY
+* NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    * ex) `XXX.firebaseapp.com`
+* NEXT_PUBLIC_FIREBASE_PROJECT_ID
+* NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    * ex) `XXX.appspot.com`
+* NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+* NEXT_PUBLIC_FIREBASE_APP_ID
