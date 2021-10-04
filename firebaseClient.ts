@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { Firestore, DocumentData, getFirestore, collection, addDoc, getDocs } from 'firebase/firestore/lite'
+import { Firestore, getFirestore, doc, setDoc } from 'firebase/firestore/lite'
 import { YouTube } from 'state/auth'
 
 const firebaseConfig = {
@@ -15,7 +15,7 @@ export const app = initializeApp(firebaseConfig)
 export const db = getFirestore(app)
 
 export const createInvitation = async (db: Firestore, email: string, youtubeInfo: YouTube) => {
-  const invitationsCol = collection(db, 'invitations')
+  const invitationsCol = doc(db, 'invitations', youtubeInfo.channelId)
   const data = {
     email,
     channelId: youtubeInfo.channelId,
@@ -25,6 +25,6 @@ export const createInvitation = async (db: Firestore, email: string, youtubeInfo
     title: youtubeInfo.title,
     description: youtubeInfo.description || '',
   }
-  const docRef = await addDoc(invitationsCol, data)
+  const docRef = await setDoc(invitationsCol, data)
   return docRef
 }
