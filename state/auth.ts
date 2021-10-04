@@ -18,7 +18,12 @@ export type YouTube = {
   title: string
   description: string
 }
-export const youtubeState = atom<YouTube>({
+export const youtubeState = atom<Array<YouTube>>({
   key: 'youtube',
-  default: { channelId: '', videoCount: 0, viewCount: 0, keywords: '', title: '', description: '' } as YouTube,
+  default: [] as Array<YouTube>,
+})
+
+export const registerIndexState = atom<number | undefined>({
+  key: 'registerIndex',
+  default: undefined,
 })

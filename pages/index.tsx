@@ -1,16 +1,21 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRecoilState } from 'recoil'
-import { authState, youtubeState } from 'state/auth'
+import { authState, registerIndexState, youtubeState } from 'state/auth'
 import styles from '../styles/Home.module.css'
 import { Modal } from 'components/Modal'
 
 const Home: NextPage = () => {
   const [openModal, setOpenModal] = useState(false)
   const [auth] = useRecoilState(authState)
-  const [youtube] = useRecoilState(youtubeState)
-  console.log(auth)
+  const [youtubeInfo] = useRecoilState(youtubeState)
+  const [registerIndex] = useRecoilState(registerIndexState)
+
+  const registerYouTubeInfo = useMemo(() => {
+    console.log(youtubeInfo, registerIndex)
+    return registerIndex === undefined ? undefined : youtubeInfo.at(registerIndex)
+  }, [registerIndex, youtubeInfo])
 
   const onClose = () => {
     setOpenModal(false)
@@ -33,14 +38,15 @@ const Home: NextPage = () => {
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
-        {auth.email && auth.email !== '' ? (
+        {auth.email && auth.email !== '' && registerYouTubeInfo !== undefined ? (
           <div>
-            <p>Email: {auth.email}</p>
-            <p>YouTube Channel ID: {youtube.channelId}</p>
-            <p>YouTube View Count: {youtube.viewCount}</p>
-            <p>YouTube Video Count: {youtube.videoCount}</p>
-            <p>YouTube Keywords: {youtube.keywords}</p>
-            <p>YouTube Description: {youtube.description}</p>
+            <p>Register Email: {auth.email}</p>
+            <p>YouTube Channel ID: {registerYouTubeInfo.channelId}</p>
+            <p>YouTube Title: {registerYouTubeInfo.title}</p>
+            <p>YouTube Description: {registerYouTubeInfo.description}</p>
+            <p>YouTube View Count: {registerYouTubeInfo.viewCount}</p>
+            <p>YouTube Video Count: {registerYouTubeInfo.videoCount}</p>
+            <p>YouTube Keywords: {registerYouTubeInfo.keywords}</p>
           </div>
         ) : (
           <div>

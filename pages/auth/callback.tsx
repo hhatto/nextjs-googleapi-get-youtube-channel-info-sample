@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 import DefaultErrorPage from 'next/error'
 import { useRecoilState } from 'recoil'
 import { authState, youtubeState } from 'state/auth'
-import { db, createInvitation } from 'firebaseClient'
 
 const SCOPE_YOUTUBE = 'https://www.googleapis.com/auth/youtube.readonly'
 const SCOPE_EMAIL = 'https://www.googleapis.com/auth/userinfo.email'
@@ -13,8 +12,8 @@ const SCOPE_EMAIL = 'https://www.googleapis.com/auth/userinfo.email'
 const AuthCallback: NextPage = () => {
   const router = useRouter()
   const [isVerify, setIsVerify] = useState(false)
-  const [auth, setAuth] = useRecoilState(authState)
-  const [youtube, setYoutube] = useRecoilState(youtubeState)
+  const [, setAuth] = useRecoilState(authState)
+  const [, setYoutube] = useRecoilState(youtubeState)
   const path = useRouter().asPath
   const queryString = path.split('#')[1]
   const urlParams = new URLSearchParams(queryString)
@@ -50,14 +49,15 @@ const AuthCallback: NextPage = () => {
       return fetch(youtubeDataApiUrl).then((res: any) => {
         const data = res.json()
         return data.then((value: any) => {
-          console.log(value.items[0])
-          const channelId = value.items[0].id
-          const videoCount = value.items[0].statistics.videoCount
-          const viewCount = value.items[0].statistics.viewCount
-          const keywords = value.items[0].brandingSettings.channel.keywords
-          const title = value.items[0].snippet.title
-          const description = value.items[0].snippet.description
-          return { channelId, videoCount, viewCount, keywords, title, description }
+          return value.items.map((item: any, idx: number) => {
+            const channelId = item.id
+            const videoCount = item.statistics.videoCount
+            const viewCount = item.statistics.viewCount
+            const keywords = item.brandingSettings.channel.keywords
+            const title = item.snippet.title
+            const description = item.snippet.description
+            return { channelId, videoCount, viewCount, keywords, title, description }
+          })
         })
       })
     },
@@ -75,9 +75,8 @@ const AuthCallback: NextPage = () => {
       return
     }
     setAuth({ email: verifyData.email || '', accessToken })
-    setYoutube({ ...youtubeData })
-    createInvitation(db, verifyData.email, youtubeData)
-    router.push('/')
+    setYoutube(youtubeData)
+    router.push('/select')
   }, [accessToken, setAuth, setYoutube, isVerify, router, verifyData, youtubeData])
 
   if (scope) {
