@@ -13,7 +13,6 @@ const Home: NextPage = () => {
   const [registerIndex] = useRecoilState(registerIndexState)
 
   const registerYouTubeInfo = useMemo(() => {
-    console.log(youtubeInfo, registerIndex)
     return registerIndex === undefined ? undefined : youtubeInfo.at(registerIndex)
   }, [registerIndex, youtubeInfo])
 
