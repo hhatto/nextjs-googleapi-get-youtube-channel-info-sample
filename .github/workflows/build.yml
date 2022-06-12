@@ -1,0 +1,17 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build with Docker
+    runs-on: ubuntu-latest
+    needs: notification-start
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build
+      id: build-image
+      run: |
+        docker-compose -f $COMPOSE_FILE build
