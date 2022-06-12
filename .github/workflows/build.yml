@@ -15,4 +15,4 @@ jobs:
     - name: Build
       id: build-image
       run: |
-        docker-compose -f $COMPOSE_FILE build
+        docker-compose build
